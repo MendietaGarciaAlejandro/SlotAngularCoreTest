@@ -1,0 +1,16 @@
+# General
+node_modules/
+dist/
+.DS_Store
+.idea/
+.vscode/
+
+# Angular
+.angular/
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# Logs
+npm-debug.log
+yarn-error.log
