@@ -1,0 +1,15 @@
+<div class="game-card">
+  <div class="card-image-wrapper">
+    <span *ngIf="game.isFeatured" class="featured-badge">Destacado</span>
+    <img [src]="game.thumbnailUrl" [alt]="game.title" class="card-image">
+  </div>
+  <div class="card-content">
+    <h3 class="game-title">{{ game.title }}</h3>
+    <div class="game-provider">{{ game.provider }}</div>
+    <div class="game-info">
+      <span>RTP: {{ game.rtp }}%</span>
+      <span>Vol: {{ game.volatility === 'High' ? 'Alta' : game.volatility === 'Medium' ? 'Media' : 'Baja' }}</span>
+    </div>
+    <button class="play-btn">Jugar Ahora</button>
+  </div>
+</div>

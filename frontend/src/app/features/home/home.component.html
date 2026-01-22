@@ -1,0 +1,50 @@
+<app-banner></app-banner>
+
+<div class="container" style="padding: 2rem 1rem;">
+    <section class="mb-12">
+        <div class="section-header"
+            style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+            <div>
+                <h2 class="text-gold" style="margin-bottom: 0.5rem;">Juegos Destacados</h2>
+                <p class="text-muted" style="margin:0;">Los mejores slots elegidos para ti</p>
+            </div>
+            <a routerLink="/lobby" class="btn btn-secondary btn-sm">Ver Todo</a>
+        </div>
+
+        <div class="games-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem;">
+            <ng-container *ngIf="featuredGames$ | async as games; else loading">
+                <app-game-card *ngFor="let game of games" [game]="game"></app-game-card>
+            </ng-container>
+
+            <ng-template #loading>
+                <div class="loading-state" style="grid-column: 1/-1; text-align: center; padding: 4rem;">
+                    <p class="text-neon" style="font-size: 1.2rem;">Cargando experiencia de casino...</p>
+                </div>
+            </ng-template>
+        </div>
+    </section>
+
+    <section class="promo-section"
+        style="background: var(--bg-secondary); border-radius: var(--border-radius-lg); padding: 3rem; text-align: center; border: 1px solid var(--accent-gold);">
+        <h3 style="color: white; font-size: 2rem; margin-bottom: 1rem;">¿Por qué jugar con nosotros?</h3>
+        <div class="features-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 2rem;">
+            <div>
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚀</div>
+                <h4 style="color: var(--accent-blue);">Pagos Rápidos</h4>
+                <p class="text-muted">Retiros instantáneos a tu cuenta.</p>
+            </div>
+            <div>
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🛡️</div>
+                <h4 style="color: var(--accent-gold);">100% Seguro</h4>
+                <p class="text-muted">Licencia oficial y encriptación SSL.</p>
+            </div>
+            <div>
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎧</div>
+                <h4 style="color: var(--accent-neon);">Soporte 24/7</h4>
+                <p class="text-muted">Estamos aquí para ayudarte siempre.</p>
+            </div>
+        </div>
+    </section>
+</div>

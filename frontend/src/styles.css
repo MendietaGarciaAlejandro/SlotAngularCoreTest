@@ -1,0 +1,123 @@
+/* Tema Casino Premium - Variables Globales */
+:root {
+    /* Paleta de Colores */
+    --bg-primary: #0a0a0a;
+    /* Negro profundo */
+    --bg-secondary: #1a1a1a;
+    /* Gris muy oscuro para tarjetas/secciones */
+    --bg-header: #111111;
+    /* Fondo de cabecera */
+
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-muted: #666666;
+
+    /* Acentos */
+    --accent-gold: #ffd700;
+    /* Dorado lujo - Para VIP/Premios */
+    --accent-gold-hover: #ffed4a;
+    --accent-neon: #ff2a6d;
+    /* Rosa neón - Para acciones principales */
+    --accent-neon-hover: #ff5c8d;
+    --accent-blue: #05d9e8;
+    /* Azul cian - Para información */
+
+    /* Espaciado y Bordes */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 16px;
+
+    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-neon: 0 0 10px rgba(255, 42, 109, 0.5);
+    --shadow-gold: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Roboto', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* Tipografía */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+}
+
+h2 {
+    font-size: 2rem;
+    color: var(--accent-gold);
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+/* Utilidades Comunes */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--accent-neon);
+    color: white;
+    box-shadow: var(--shadow-neon);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-neon-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(255, 42, 109, 0.7);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 215, 0, 0.1);
+    color: var(--text-primary);
+}
+
+.text-gold {
+    color: var(--accent-gold);
+}
+
+.text-neon {
+    color: var(--accent-neon);
+}
