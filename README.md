@@ -1,40 +1,43 @@
-# Slot Casino - Core Test
+# 🎰 Slot Casino - Core Test
 
-Bienvenido al repositorio de **Slot Casino**. Este proyecto es una prueba de concepto para simular una plataforma de juegos de casino online, enfocada en la experiencia de usuario y una arquitectura robusta.
+Bienvenido al repositorio de **Slot Casino**. Este proyecto es una prueba de concepto para una plataforma de juegos de casino online, enfocada en una arquitectura moderna y una experiencia de usuario premium.
 
-La idea es construir un sistema escalable y moderno, separando claramente las responsabilidades entre el cliente, el servidor y los datos.
+## 📊 Estado Actual del Proyecto
 
-## 🏗️ Arquitectura del Proyecto
+*   **Frontend:** ~20% completado. (Lobby funcional, Juego Play, Mock Services).
+*   **Backend:** ~5% completado. (Estructura de solución VS, Modelos base, Rest API inicial).
 
-El sistema está dividido en tres pilares principales:
+## 🏗️ Arquitectura y Avances
 
-*   **Frontend (Angular):**
-    Toda la interfaz de usuario está desarrollada con Angular. He buscado darle un toque "premium" (temas oscuros, dorados, neón) para que se sienta como un casino real. Aquí es donde vive la lógica de presentación y la interacción con el jugador.
+### 🎮 Frontend (Angular v17+) - **[20%]**
+La interfaz está diseñada con una estética oscura y dorada para una sensación premium.
+- **Home**: Banner y juegos destacados.
+- **Lobby (v2.2)**: Sistema de navegación reactivo y listado completo de juegos.
+- **Game Play**: Lógica real de slot machine (giros, cuadrícula dinámica, detección de premios).
+- **Core**: Servicios optimizados para una carga instantánea y manejo de estados.
 
-*   **Backend (ASP.NET Core API):**
-    *(En desarrollo)* El cerebro de la operación. Esta API se encarga de gestionar la lógica de negocio, validar las jugadas y mantener la seguridad de las transacciones. 
+### ⚙️ Backend (ASP.NET Core 8.0) - **[5%]**
+Diseñado para ser robusto y compatible con Visual Studio.
+- **Solución VS**: Estructura organizada en `src/` preparada para escalado.
+- **Modelos**: Reflejo exacto de las entidades del juego (`Game`, `GameConfig`).
+- **RESTful API**: Endpoints iniciales para la gestión de juegos.
+- **CORS**: Configurado para integración directa con el frontend.
 
-*   **Base de Datos (Supabase):**
-    *(En desarrollo)* Usamos Supabase para la persistencia de datos. Aquí guardaremos perfiles de usuarios, historiales de partidas y configuraciones.
+### 🗄️ Base de Datos (Supabase) - **[Pendiente]**
+Configuración de infraestructura inicial lista (`infra/supabase`).
 
 ## 🚀 Cómo empezar
 
-De momento, puedes arrancar la parte visual (Frontend) para ver cómo luce:
+### Frontend
+1. Entra a `frontend/` e instala: `npm install`
+2. Arranca: `npm start`
+3. Abre: `http://localhost:4200`
 
-1.  Entra a la carpeta del frontend:
-    ```bash
-    cd frontend
-    ```
-2.  Instala las dependencias:
-    ```bash
-    npm install
-    ```
-3.  Arranca el servidor de desarrollo:
-    ```bash
-    npm start
-    ```
-
-¡Y listo! Deberías ver la aplicación corriendo en `http://localhost:4200`.
+### Backend (Visual Studio / .NET CLI)
+1. Abre `backend/SlotCasino.sln` en **Visual Studio**.
+2. O usa la CLI: `dotnet run --project backend/src/SlotCasino.Api/SlotCasino.Api.csproj`
+3. Explora la API en: `http://localhost:5000/swagger`
 
 ---
-*Este proyecto está en evolución constante. Si ves algo que se pueda mejorar, ¡toda sugerencia es bienvenida!*
+*Este proyecto está en evolución constante. v2.2 del frontend y v0.1 del backend.*
+
