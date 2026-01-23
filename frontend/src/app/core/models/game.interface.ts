@@ -1,10 +1,20 @@
 export interface Game {
     id: string;
     title: string;
-    description?: string;
-    provider: string; // e.g., 'Pragmatic Play', 'NetEnt'
+    provider: string;
     thumbnailUrl: string;
-    rtp: number; // Return to Player percentage
-    volatility: 'Low' | 'Medium' | 'High' | 'Very High';
-    isFeatured?: boolean;
+    rtp: number;
+    volatility: 'High' | 'Medium' | 'Low';
+    isFeatured: boolean;
+    description: string;
+}
+
+export interface GameConfig {
+    gameId: string;
+    symbols: string[]; // Emojis o URLs de imágenes
+    rows: number;
+    cols: number;
+    paylines: number; // Por ahora visual
+    themeColor: string;
+    backgroundImage?: string;
 }

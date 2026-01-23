@@ -10,6 +10,6 @@
       <span>RTP: {{ game.rtp }}%</span>
       <span>Vol: {{ game.volatility === 'High' ? 'Alta' : game.volatility === 'Medium' ? 'Media' : 'Baja' }}</span>
     </div>
-    <button class="play-btn">Jugar Ahora</button>
+    <button class="play-btn" [routerLink]="['/play', game.id]">Jugar Ahora</button>
   </div>
 </div>

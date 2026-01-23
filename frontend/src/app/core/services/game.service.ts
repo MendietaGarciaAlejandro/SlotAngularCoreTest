@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
-import { Game } from '../models/game.interface';
+import { Game, GameConfig } from '../models/game.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -91,30 +91,57 @@ export class GameService {
         }
     ];
 
+    private gameConfigs: { [key: string]: GameConfig } = {
+        '1': { // Sweet Bonanza (Frutas/Dulces)
+            gameId: '1',
+            symbols: ['🍭', '🍇', '🍉', '🍌', '🍎', '🍬', '💣'],
+            rows: 5, cols: 6, paylines: 0, // Cluster
+            themeColor: '#ff69b4'
+        },
+        '2': { // Book of Dead (Egipto)
+            gameId: '2',
+            symbols: ['🏺', '🐕', '🦅', '🤠', '🔟', '🇯', '🇶', '🇰', '🇦'],
+            rows: 3, cols: 5, paylines: 10,
+            themeColor: '#d4af37'
+        },
+        '3': { // Starburst (Joyas)
+            gameId: '3',
+            symbols: ['💎', '💠', '🔶', '🟣', '⭐', '7️⃣'],
+            rows: 3, cols: 5, paylines: 10,
+            themeColor: '#8a2be2'
+        },
+        '4': { // Big Bass (Pesca)
+            gameId: '4',
+            symbols: ['🐟', '🎣', '🛶', '🦟', '🐠', '🌊'],
+            rows: 3, cols: 5, paylines: 10,
+            themeColor: '#00bfff'
+        },
+        'default': {
+            gameId: '0',
+            symbols: ['🍒', '🍋', '🔔', '7️⃣', '💎', '🍀'],
+            rows: 3, cols: 5, paylines: 20,
+            themeColor: '#ff0000'
+        }
+    };
+
     constructor() { }
 
-    /**
-     * Simula una llamada a API para obtener todos los juegos
-     * Retorna un Observable con un array de juegos
-     */
     getAllGames(): Observable<Game[]> {
-        return of(this.mockGames).pipe(delay(500)); // Simula latencia de red
+        return of(this.mockGames);
     }
 
-    /**
-     * Simula una llamada a API para obtener juegos destacados
-     */
     getFeaturedGames(): Observable<Game[]> {
         const featured = this.mockGames.filter(g => g.isFeatured);
-        return of(featured).pipe(delay(500));
+        return of(featured);
     }
 
-    /**
-     * Busca un juego por su ID
-     * @param id Identificador del juego
-     */
     getGameById(id: string): Observable<Game | undefined> {
         const game = this.mockGames.find(g => g.id === id);
-        return of(game).pipe(delay(200));
+        return of(game);
+    }
+
+    getGameConfig(id: string): Observable<GameConfig> {
+        const config = this.gameConfigs[id] || this.gameConfigs['default'];
+        return of(config);
     }
 }

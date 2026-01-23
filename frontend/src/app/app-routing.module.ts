@@ -11,6 +11,10 @@ const routes: Routes = [
     loadChildren: () => import('./features/lobby/lobby.module').then(m => m.LobbyModule)
   },
   {
+    path: 'play',
+    loadChildren: () => import('./features/game/game.module').then(m => m.GameModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
