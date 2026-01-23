@@ -6,6 +6,7 @@ Bienvenido al repositorio de **Slot Casino**. Este proyecto es una prueba de con
 
 *   **Frontend:** ~20% completado. (Lobby funcional, Juego Play, Mock Services).
 *   **Backend:** ~5% completado. (Estructura de solución VS, Modelos base, Rest API inicial).
+*   **Base de Datos:** ~10% completado. (Diseño lógico UML, Esquema SQL PostgreSQL).
 
 ## 🏗️ Arquitectura y Avances
 
@@ -23,8 +24,11 @@ Diseñado para ser robusto y compatible con Visual Studio.
 - **RESTful API**: Endpoints iniciales para la gestión de juegos.
 - **CORS**: Configurado para integración directa con el frontend.
 
-### 🗄️ Base de Datos (Supabase) - **[Pendiente]**
-Configuración de infraestructura inicial lista (`infra/supabase`).
+### 🗄️ Base de Datos (Supabase / PostgreSQL) - **[10%]**
+Infraestructura inicial y diseño relacional completo.
+- **Esquema UML**: Diagrama de clases detallado en [database_uml.md](file:///home/user0000/Documentos/SlotAngularCoreTest/infra/supabase/database_uml.md).
+- **Script SQL**: Definición de tablas (`perfiles`, `juegos`, `transacciones`) en [schema_inicial.sql](file:///home/user0000/Documentos/SlotAngularCoreTest/infra/supabase/schema_inicial.sql).
+- **RLS**: Bases preparadas para seguridad de nivel de fila.
 
 ## 🚀 Cómo empezar
 
