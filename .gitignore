@@ -14,3 +14,38 @@ frontend/.angular/
 # Logs
 npm-debug.log
 yarn-error.log
+
+# Visual Studio / .NET
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docuser
+*.userprefs
+*.dbmdl
+*.jsproj.user
+*.sqlproj.user
+*.csproj.user
+*.vbproj.user
+*.props.user
+*.targets.user
+*.vcxproj.user
+*.filters.user
+
+# NuGet Packages
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# Test results
+[Tt]est[Rr]esults/
+[Bb]uildLog.htm
+[Bb]uildLog.xml
