@@ -5,7 +5,7 @@ Bienvenido al repositorio de **Slot Casino**. Este proyecto es una prueba de con
 ## 📊 Estado Actual del Proyecto
 
 *   **Frontend:** ~20% completado. (Lobby funcional, Juego Play, Mock Services).
-*   **Backend:** ~5% completado. (Estructura de solución VS, Modelos base, Rest API inicial).
+*   **Backend:** ~10% completado. (Migración a .NET 10, Controladores Mock base, Rest API).
 *   **Base de Datos:** ~10% completado. (Diseño lógico UML, Esquema SQL PostgreSQL).
 
 ## 🏗️ Arquitectura y Avances
@@ -17,12 +17,20 @@ La interfaz está diseñada con una estética oscura y dorada para una sensació
 - **Game Play**: Lógica real de slot machine (giros, cuadrícula dinámica, detección de premios).
 - **Core**: Servicios optimizados para una carga instantánea y manejo de estados.
 
-### ⚙️ Backend (ASP.NET Core 8.0) - **[5%]**
+### ⚙️ Backend (ASP.NET Core 10.0) - **[10%]**
+*Migrado recientemente desde .NET 8.0 para aprovechar las mejoras de rendimiento y seguridad.*
 Diseñado para ser robusto y compatible con Visual Studio.
 - **Solución VS**: Estructura organizada en `src/` preparada para escalado.
-- **Modelos**: Reflejo exacto de las entidades del juego (`Game`, `GameConfig`).
-- **RESTful API**: Endpoints iniciales para la gestión de juegos.
-- **CORS**: Configurado para integración directa con el frontend.
+- **Modelos**: Reflejo inicial de las entidades del juego (`Game`, `GameConfig`).
+- **RESTful API**: 11 Endpoints iniciales (`GamesController`) para catálogo, búsquedas y filtros de juegos (usando *Mock Data* temporal).
+- **CORS & OpenAPI**: Swagger y CORS configurados para integración directa con el frontend.
+
+**Análisis de Completitud para 100%:**
+Para lograr una API funcional de casino puro, es necesario implementar:
+1. **Integración DB (~20%)**: EF Core + PostgreSQL (Supabase) para persistir datos.
+2. **Auth & Perfiles (~20%)**: Autenticación JWT y roles (Usuario/Admin).
+3. **Wallet/Transacciones (~25%)**: Motor seguro de balance, depósitos y retiros.
+4. **Game Logic Engine (~25%)**: Generación de números aleatorios (RNG) segura en el backend y resolución matemática de las tiradas para evitar manipulaciones en el frontend.
 
 ### 🗄️ Base de Datos (Supabase / PostgreSQL) - **[10%]**
 Infraestructura inicial y diseño relacional completo.

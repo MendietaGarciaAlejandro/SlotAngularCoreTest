@@ -1,10 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using SlotCasino.Api.Data;
+using SlotCasino.Api.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configure DB Context with PostgreSQL
+var connectionString = builder.Configuration.GetConnectionString("SupabaseConnection");
+builder.Services.AddDbContext<CasinoDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+// Register application services
+builder.Services.AddScoped<IServicioBilletera, ServicioBilletera>();
+builder.Services.AddScoped<IMotorJuego, MotorJuego>();
 
 // Configure CORS
 builder.Services.AddCors(options =>

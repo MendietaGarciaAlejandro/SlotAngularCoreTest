@@ -1,63 +1,59 @@
-<div class="game-wrapper" [style.--theme-color]="config?.themeColor || '#444'">
-
-    <div class="header-bar">
-        <a routerLink="/lobby" class="btn-back">⬅ Volver al Lobby</a>
+<div class="game-play-container">
+    <!-- Navbar / Header de juego en móvil -->
+    <div class="game-nav">
+        <button class="back-button" (click)="goBack()">
+            <i>⬅</i> Volver
+        </button>
         <div class="balance-display">
-            <span>Saldo:</span>
-            <span class="amount">{{ balance }} €</span>
+            <span class="currency">$</span>
+            <span class="amount">{{ balance | number:'1.2-2' }}</span>
         </div>
     </div>
 
-    <div class="slot-machine container" *ngIf="game && config; else loading">
-        <div class="machine-header">
-            <h2>{{ game.title }}</h2>
-            <div class="provider-badge">{{ game.provider }}</div>
+    <div class="slot-machine container" *ngIf="game && config; else loadingTemplate">
+        <div class="game-header-info">
+            <h2>{{ game.titulo }}</h2>
+            <div class="provider-badge">{{ game.proveedor }}</div>
         </div>
 
         <!-- Area de Juego -->
-        <div class="slot-grid-area">
-            <div class="slot-grid" [style.grid-template-columns]="'repeat(' + config.cols + ', 1fr)'">
-
-                <ng-container *ngFor="let row of grid; let rowIndex = index">
-                    <div *ngFor="let symbol of row; let colIndex = index" class="slot-cell"
-                        [class.spinning]="isSpinning">
-                        <span class="symbol">{{ symbol }}</span>
+        <div class="slot-grid" [style.background]="config.colorTema ?? '#1a1d24'">
+            <div class="grid-container" [style.gridTemplateColumns]="'repeat(' + config.columnas + ', 1fr)'">
+                <ng-container *ngFor="let row of grid; let r = index">
+                    <div class="slot-cell" *ngFor="let symbol of row; let c = index">
+                        <span class="symbol" [class.spinning]="isSpinning">{{ symbol }}</span>
                     </div>
                 </ng-container>
-
             </div>
+        </div>
 
-            <!-- Mensajes Overlay -->
-            <div class="win-overlay" *ngIf="winAmount > 0">
-                <div class="win-content">
-                    <span class="win-label">BIG WIN!</span>
-                    <span class="win-value">+{{ winAmount }}</span>
-                </div>
-            </div>
+        <div class="win-display" *ngIf="lastWin > 0 && !isSpinning">
+            <span class="win-text">¡Premio: ${{ lastWin | number:'1.2-2' }}!</span>
         </div>
 
         <!-- Controles -->
-        <div class="controls-panel">
-            <div class="status-message">{{ message }}</div>
-
-            <div class="actions">
-                <div class="bet-control">
-                    <label>Apuesta</label>
-                    <div class="bet-value">{{ bet }} €</div>
+        <div class="slot-controls">
+            <div class="bet-control">
+                <button class="btn btn-secondary" (click)="bet = bet > 1 ? bet - 1 : 1"
+                    [disabled]="isSpinning">-</button>
+                <div class="bet-display">
+                    <span class="label">Apuesta</span>
+                    <span class="value">${{ bet }}</span>
                 </div>
-
-                <button class="btn-spin" (click)="spin()" [disabled]="isSpinning || balance < bet">
-                    {{ isSpinning ? '...' : 'GIRAR' }}
-                </button>
+                <button class="btn btn-secondary" (click)="bet = bet + 1" [disabled]="isSpinning">+</button>
             </div>
-        </div>
 
+            <button class="btn btn-action spin-button" [class.spinning]="isSpinning"
+                [disabled]="isSpinning || balance < bet" (click)="spin()">
+                {{ isSpinning ? 'Girando...' : 'GIRAR 🔄' }}
+            </button>
+        </div>
     </div>
 
-    <ng-template #loading>
-        <div class="loading-screen">
-            <p>Cargando tu juego favorito...</p>
+    <ng-template #loadingTemplate>
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Cargando juego...</p>
         </div>
     </ng-template>
-
 </div>

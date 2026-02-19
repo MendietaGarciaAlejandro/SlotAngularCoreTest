@@ -1,20 +1,11 @@
 export interface Game {
-    id: string;
-    title: string;
-    provider: string;
-    thumbnailUrl: string;
+    id: string; // uuid in backend
+    titulo: string;
+    proveedor: string;
+    urlMiniatura?: string;
     rtp: number;
-    volatility: 'High' | 'Medium' | 'Low';
-    isFeatured: boolean;
-    description: string;
-}
-
-export interface GameConfig {
-    gameId: string;
-    symbols: string[]; // Emojis o URLs de imágenes
-    rows: number;
-    cols: number;
-    paylines: number; // Por ahora visual
-    themeColor: string;
-    backgroundImage?: string;
+    volatilidad?: string;
+    esDestacado: boolean;
+    descripcion?: string;
+    creadoEn: string;
 }

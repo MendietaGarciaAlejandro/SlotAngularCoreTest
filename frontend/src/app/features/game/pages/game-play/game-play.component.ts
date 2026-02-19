@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Game } from '../../../../core/models/game.interface';
+import { ConfigJuego } from '../../../../core/models/config-juego.interface';
 import { GameService } from '../../../../core/services/game.service';
-import { Game, GameConfig } from '../../../../core/models/game.interface';
-import { delay, finalize } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-game-play',
@@ -11,110 +12,97 @@ import { delay, finalize } from 'rxjs';
     standalone: false
 })
 export class GamePlayComponent implements OnInit {
-    gameId: string | null = null;
     game: Game | undefined;
-    config: GameConfig | undefined;
+    config: ConfigJuego | undefined;
+    loading = true;
 
     // Estado del juego
     grid: string[][] = [];
     isSpinning = false;
-    winAmount = 0;
-    message = '¡Buena suerte!';
-    balance = 1000; // Balance simulado
+    balance = 1000; // Mockearemos Billetera por el momento
     bet = 10;
+    lastWin = 0;
 
     constructor(
         private route: ActivatedRoute,
-        private gameService: GameService
+        private gameService: GameService,
+        private location: Location
     ) { }
 
     ngOnInit(): void {
-        this.gameId = this.route.snapshot.paramMap.get('id');
-        if (this.gameId) {
-            this.loadGame(this.gameId);
+        const id = this.route.snapshot.paramMap.get('id');
+        if (id) {
+            this.gameService.getGameById(id).subscribe(g => {
+                this.game = g;
+                this.loading = false;
+            });
+            this.gameService.getGameConfig(id).subscribe((c: ConfigJuego) => {
+                this.config = c;
+                if (c) this.initializeGrid();
+            });
         }
     }
 
-    loadGame(id: string) {
-        // Cargar info del juego
-        this.gameService.getGameById(id).subscribe(g => this.game = g);
-
-        // Cargar configuración de la slot
-        this.gameService.getGameConfig(id).subscribe(c => {
-            this.config = c;
-            this.initializeGrid();
-        });
-    }
-
-    initializeGrid() {
-        const config = this.config;
-        if (!config) return;
-        // Llenar grilla inicial con símbolos aleatorios
-        this.grid = Array(config.rows).fill(null)
-            .map(() => Array(config.cols).fill(null)
-                .map(() => this.getRandomSymbol()));
+    initializeGrid(): void {
+        if (!this.config) return;
+        this.grid = [];
+        for (let r = 0; r < this.config.filas; r++) {
+            const row = [];
+            for (let c = 0; c < this.config.columnas; c++) {
+                row.push(this.getRandomSymbol());
+            }
+            this.grid.push(row);
+        }
     }
 
     getRandomSymbol(): string {
-        if (!this.config) return '?';
-        const index = Math.floor(Math.random() * this.config.symbols.length);
-        return this.config.symbols[index];
+        if (!this.config || !this.config.simbolos) return "❓";
+        const index = Math.floor(Math.random() * this.config.simbolos.length);
+        return this.config.simbolos[index];
     }
 
-    spin() {
-        if (this.isSpinning || this.balance < this.bet) {
-            if (this.balance < this.bet) this.message = 'Saldo insuficiente';
-            return;
-        }
+    spin(): void {
+        if (this.balance < this.bet || this.isSpinning || !this.config) return;
 
         this.isSpinning = true;
-        this.message = '¡Girando...!';
-        this.winAmount = 0;
         this.balance -= this.bet;
+        this.lastWin = 0;
 
-        // Simular tiempo de giro
+        // Simular retardo
         setTimeout(() => {
             this.performSpin();
-            this.checkWin();
-            this.isSpinning = false;
-        }, 1500); // 1.5 segundos de tensión
+        }, 1000);
     }
 
-    performSpin() {
+    performSpin(): void {
         if (!this.config) return;
 
-        // Generar nueva matriz
-        this.grid = this.grid.map(row =>
-            row.map(() => this.getRandomSymbol())
-        );
-    }
+        this.isSpinning = false;
+        this.initializeGrid(); // Generar un grid aleatorio final
 
-    checkWin() {
-        if (!this.config) return;
-        let win = 0;
-
-        // Lógica simple de victoria: 3 o más iguales en una fila
-        // (Simplificado para la demo)
+        // Lógica simple y simulada de victoria
+        let winAmount = 0;
         for (let row of this.grid) {
             let count = 1;
             for (let i = 1; i < row.length; i++) {
                 if (row[i] === row[i - 1]) {
                     count++;
                 } else {
-                    // Chequear si la racha anterior fue premio
-                    if (count >= 3) win += count * 5;
+                    if (count >= 3) winAmount += count * 5;
                     count = 1;
                 }
             }
-            if (count >= 3) win += count * 5;
+            if (count >= 3) winAmount += count * 5;
         }
 
-        if (win > 0) {
-            this.winAmount = win;
-            this.balance += win;
-            this.message = `¡PREMIO! Ganaste ${win} créditos`;
-        } else {
-            this.message = '¡Inténtalo de nuevo!';
+        if (winAmount > 0) {
+            this.lastWin = winAmount;
+            this.balance += winAmount;
         }
     }
+
+    goBack(): void {
+        this.location.back();
+    }
 }
+
