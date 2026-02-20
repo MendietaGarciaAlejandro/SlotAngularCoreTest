@@ -1,4 +1,4 @@
-using SlotCasino.Api.Models.Entities;
+using SlotCasino.Api.Models.Supabase;
 
 namespace SlotCasino.Api.Services
 {
