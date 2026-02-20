@@ -1,7 +1,7 @@
 using Postgrest.Attributes;
 using Postgrest.Models;
 
-namespace SlotCasino.Api.Models.Entities
+namespace SlotCasino.Api.Models.Supabase
 {
     [Table("perfiles")]
     public class Perfil : BaseModel

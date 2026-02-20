@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using SlotCasino.Api.Models.Entities;
+using SlotCasino.Api.Models.DTOs;
+using SlotCasino.Api.Models.Supabase;
 
 namespace SlotCasino.Api.Controllers
 {
@@ -15,11 +16,25 @@ namespace SlotCasino.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<JuegoDTO>>> GetJuegos()
+        public async Task<ActionResult<List<JuegoDTO>>> GetJuegos()
         {
             var response = await _supabase.From<Juego>().Get();
-            var dtos = response.Models.Select(j => MapToDTO(j)).ToList();
-            return Ok(dtos);
+            var list = new List<JuegoDTO>();
+            foreach (var j in response.Models)
+            {
+                list.Add(new JuegoDTO {
+                    Id = j.Id,
+                    Titulo = j.Titulo,
+                    Proveedor = j.Proveedor,
+                    UrlMiniatura = j.UrlMiniatura,
+                    Rtp = j.Rtp,
+                    Volatilidad = j.Volatilidad,
+                    EsDestacado = j.EsDestacado,
+                    Descripcion = j.Descripcion,
+                    CreadoEn = j.CreadoEn
+                });
+            }
+            return Ok(list);
         }
 
         [HttpGet("{id}")]
@@ -30,18 +45,43 @@ namespace SlotCasino.Api.Controllers
                 .Single();
             
             if (response == null) return NotFound();
-            return Ok(MapToDTO(response));
+            
+            return Ok(new JuegoDTO {
+                Id = response.Id,
+                Titulo = response.Titulo,
+                Proveedor = response.Proveedor,
+                UrlMiniatura = response.UrlMiniatura,
+                Rtp = response.Rtp,
+                Volatilidad = response.Volatilidad,
+                EsDestacado = response.EsDestacado,
+                Descripcion = response.Descripcion,
+                CreadoEn = response.CreadoEn
+            });
         }
 
         [HttpGet("destacados")]
-        public async Task<ActionResult<IEnumerable<JuegoDTO>>> GetJuegosDestacados()
+        public async Task<ActionResult<List<JuegoDTO>>> GetJuegosDestacados()
         {
             var response = await _supabase.From<Juego>()
                 .Where(j => j.EsDestacado == true)
                 .Get();
                 
-            var dtos = response.Models.Select(j => MapToDTO(j)).ToList();
-            return Ok(dtos);
+            var list = new List<JuegoDTO>();
+            foreach (var j in response.Models)
+            {
+                list.Add(new JuegoDTO {
+                    Id = j.Id,
+                    Titulo = j.Titulo,
+                    Proveedor = j.Proveedor,
+                    UrlMiniatura = j.UrlMiniatura,
+                    Rtp = j.Rtp,
+                    Volatilidad = j.Volatilidad,
+                    EsDestacado = j.EsDestacado,
+                    Descripcion = j.Descripcion,
+                    CreadoEn = j.CreadoEn
+                });
+            }
+            return Ok(list);
         }
 
         [HttpGet("{id}/config")]
@@ -53,21 +93,18 @@ namespace SlotCasino.Api.Controllers
                 
             if (response == null) return NotFound("Configuración no encontrada para este juego.");
             
-            return Ok(new ConfigJuegoDTO(
-                response.Id, response.IdJuego, response.Filas, response.Columnas, 
-                response.LineasPago, response.ColorTema, response.Simbolos, response.ActualizadoEn
-            ));
+            return Ok(new ConfigJuegoDTO
+            {
+                Id = response.Id,
+                IdJuego = response.IdJuego,
+                Filas = response.Filas,
+                Columnas = response.Columnas,
+                LineasPago = response.LineasPago,
+                ColorTema = response.ColorTema,
+                Simbolos = response.Simbolos,
+                ActualizadoEn = response.ActualizadoEn
+            });
         }
-
-        private static JuegoDTO MapToDTO(Juego j) => new JuegoDTO(
-            j.Id, j.Titulo, j.Proveedor, j.UrlMiniatura, j.Rtp, j.Volatilidad, j.EsDestacado, j.Descripcion, j.CreadoEn
-        );
     }
-
-    public record JuegoDTO(Guid Id, string Titulo, string Proveedor, string? UrlMiniatura, 
-        decimal Rtp, string? Volatilidad, bool EsDestacado, string? Descripcion, DateTime CreadoEn);
-        
-    public record ConfigJuegoDTO(Guid Id, Guid IdJuego, int Filas, int Columnas, 
-        int LineasPago, string? ColorTema, string[] Simbolos, DateTime ActualizadoEn);
 }
 

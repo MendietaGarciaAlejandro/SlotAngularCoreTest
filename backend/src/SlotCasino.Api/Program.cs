@@ -4,10 +4,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers()
-    .AddJsonOptions(options =>
+    .AddNewtonsoftJson(options =>
     {
-        // Ignorar atributos y metadatos internos de Supabase/Postgrest al serializar a JSON
-        options.JsonSerializerOptions.IgnoreReadOnlyProperties = true;
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
     });
 
 builder.Services.AddEndpointsApiExplorer();
