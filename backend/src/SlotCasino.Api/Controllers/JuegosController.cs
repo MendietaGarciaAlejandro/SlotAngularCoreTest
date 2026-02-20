@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SlotCasino.Api.Data;
 using SlotCasino.Api.Models.Entities;
 
 namespace SlotCasino.Api.Controllers
@@ -9,41 +7,47 @@ namespace SlotCasino.Api.Controllers
     [Route("api/[controller]")]
     public class JuegosController : ControllerBase
     {
-        private readonly CasinoDbContext _context;
+        private readonly Supabase.Client _supabase;
 
-        public JuegosController(CasinoDbContext context)
+        public JuegosController(Supabase.Client supabase)
         {
-            _context = context;
+            _supabase = supabase;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Juego>>> GetJuegos()
         {
-            var juegos = await _context.Juegos.ToListAsync();
-            return Ok(juegos);
+            var response = await _supabase.From<Juego>().Get();
+            return Ok(response.Models);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Juego>> GetJuego(Guid id)
         {
-            var juego = await _context.Juegos.FindAsync(id);
-            if (juego == null) return NotFound();
-            return Ok(juego);
+            var response = await _supabase.From<Juego>()
+                .Where(j => j.Id == id)
+                .Single();
+            if (response == null) return NotFound();
+            return Ok(response);
         }
 
         [HttpGet("destacados")]
         public async Task<ActionResult<IEnumerable<Juego>>> GetJuegosDestacados()
         {
-            var destacados = await _context.Juegos.Where(j => j.EsDestacado).ToListAsync();
-            return Ok(destacados);
+            var response = await _supabase.From<Juego>()
+                .Where(j => j.EsDestacado == true)
+                .Get();
+            return Ok(response.Models);
         }
 
         [HttpGet("{id}/config")]
         public async Task<ActionResult<ConfigJuego>> GetConfigJuego(Guid id)
         {
-            var config = await _context.ConfigJuegos.FirstOrDefaultAsync(c => c.IdJuego == id);
-            if (config == null) return NotFound("Configuración no encontrada para este juego.");
-            return Ok(config);
+            var response = await _supabase.From<ConfigJuego>()
+                .Where(c => c.IdJuego == id)
+                .Single();
+            if (response == null) return NotFound("Configuración no encontrada para este juego.");
+            return Ok(response);
         }
     }
 }

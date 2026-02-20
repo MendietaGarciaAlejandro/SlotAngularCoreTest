@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using SlotCasino.Api.Data;
 using SlotCasino.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,10 +7,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure DB Context with PostgreSQL
-var connectionString = builder.Configuration.GetConnectionString("SupabaseConnection");
-builder.Services.AddDbContext<CasinoDbContext>(options =>
-    options.UseNpgsql(connectionString));
+// Configure Supabase Client (HTTPS - no IPv6 issues)
+var supabaseUrl = builder.Configuration["Supabase:Url"] ?? throw new InvalidOperationException("Supabase:Url is not configured");
+var supabaseKey = builder.Configuration["Supabase:Key"] ?? throw new InvalidOperationException("Supabase:Key is not configured");
+
+builder.Services.AddSingleton(provider =>
+{
+    var client = new Supabase.Client(supabaseUrl, supabaseKey, new Supabase.SupabaseOptions
+    {
+        AutoRefreshToken = true,
+        AutoConnectRealtime = false
+    });
+    client.InitializeAsync().Wait();
+    return client;
+});
 
 // Register application services
 builder.Services.AddScoped<IServicioBilletera, ServicioBilletera>();

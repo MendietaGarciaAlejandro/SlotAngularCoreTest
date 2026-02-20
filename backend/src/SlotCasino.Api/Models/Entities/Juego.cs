@@ -1,13 +1,12 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Postgrest.Attributes;
+using Postgrest.Models;
 
 namespace SlotCasino.Api.Models.Entities
 {
     [Table("juegos")]
-    public class Juego
+    public class Juego : BaseModel
     {
-        [Key]
-        [Column("id")]
+        [PrimaryKey("id")]
         public Guid Id { get; set; }
 
         [Column("titulo")]
