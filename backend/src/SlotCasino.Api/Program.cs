@@ -3,7 +3,13 @@ using SlotCasino.Api.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Ignorar atributos y metadatos internos de Supabase/Postgrest al serializar a JSON
+        options.JsonSerializerOptions.IgnoreReadOnlyProperties = true;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
