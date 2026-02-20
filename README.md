@@ -4,52 +4,57 @@ Bienvenido al repositorio de **Slot Casino**. Este proyecto es una prueba de con
 
 ## 📊 Estado Actual del Proyecto
 
-*   **Frontend:** ~20% completado. (Lobby funcional, Juego Play, Mock Services).
-*   **Backend:** ~10% completado. (Migración a .NET 10, Controladores Mock base, Rest API).
-*   **Base de Datos:** ~10% completado. (Diseño lógico UML, Esquema SQL PostgreSQL).
+*   **Frontend:** ~40% completado. (Lobby real conectado, Integración con API, Game Play dinámico).
+*   **Backend:** ~60% completado. (Supabase SDK Integration, Wallet Service, RNG Motor).
+*   **Base de Datos:** ~50% completado. (Esquema real en Supabase, Datos de prueba/Seed).
 
 ## 🏗️ Arquitectura y Avances
 
-### 🎮 Frontend (Angular v17+) - **[20%]**
+### 🎮 Frontend (Angular v17+) - **[40%]**
 La interfaz está diseñada con una estética oscura y dorada para una sensación premium.
-- **Home**: Banner y juegos destacados.
-- **Lobby (v2.2)**: Sistema de navegación reactivo y listado completo de juegos.
-- **Game Play**: Lógica real de slot machine (giros, cuadrícula dinámica, detección de premios).
-- **Core**: Servicios optimizados para una carga instantánea y manejo de estados.
+- **Home**: Banner y acceso a lobby.
+- **Lobby**: Listado dinámico consumiendo datos desde la API real de ASP.NET Core.
+- **Game Play**: Lógica de slot machine conectada al backend (apuestas y premios reales).
+- **Core**: Servicios integrados con la API mediante `HttpClient`.
 
-### ⚙️ Backend (ASP.NET Core 10.0) - **[10%]**
-*Migrado recientemente desde .NET 8.0 para aprovechar las mejoras de rendimiento y seguridad.*
-Diseñado para ser robusto y compatible con Visual Studio.
-- **Solución VS**: Estructura organizada en `src/` preparada para escalado.
-- **Modelos**: Reflejo inicial de las entidades del juego (`Game`, `GameConfig`).
-- **RESTful API**: 11 Endpoints iniciales (`GamesController`) para catálogo, búsquedas y filtros de juegos (usando *Mock Data* temporal).
-- **CORS & OpenAPI**: Swagger y CORS configurados para integración directa con el frontend.
+### ⚙️ Backend (ASP.NET Core 10.0) - **[60%]**
+*Migrado recientemente para usar el SDK oficial de Supabase C#, eliminando dependencias de EF Core para mayor estabilidad.*
+- **Supabase SDK**: Conexión HTTPS robusta (vía Rest/Postgrest) que soluciona problemas de conectividad IPv6 de PostgreSQL directo.
+- **Servicios**:
+  - `MotorJuego`: Lógica de RNG y cálculo de premios en el lado del servidor.
+  - `ServicioBilletera`: Gestión de transacciones y saldos persistidos en DB.
+- **DTOs & Serialización**: Implementación de DTOs atómicos y `Newtonsoft.Json` para una salida de datos limpia y sin metadatos internos del SDK.
+- **CORS & OpenAPI**: Swagger configurado para pruebas directas en `http://localhost:5000/swagger`.
 
-**Análisis de Completitud para 100%:**
-Para lograr una API funcional de casino puro, es necesario implementar:
-1. **Integración DB (~20%)**: EF Core + PostgreSQL (Supabase) para persistir datos.
-2. **Auth & Perfiles (~20%)**: Autenticación JWT y roles (Usuario/Admin).
-3. **Wallet/Transacciones (~25%)**: Motor seguro de balance, depósitos y retiros.
-4. **Game Logic Engine (~25%)**: Generación de números aleatorios (RNG) segura en el backend y resolución matemática de las tiradas para evitar manipulaciones en el frontend.
-
-### 🗄️ Base de Datos (Supabase / PostgreSQL) - **[10%]**
-Infraestructura inicial y diseño relacional completo.
-- **Esquema UML**: Diagrama de clases detallado en [database_uml.md](file:///home/user0000/Documentos/SlotAngularCoreTest/infra/supabase/database_uml.md).
-- **Script SQL**: Definición de tablas (`perfiles`, `juegos`, `transacciones`) en [schema_inicial.sql](file:///home/user0000/Documentos/SlotAngularCoreTest/infra/supabase/schema_inicial.sql).
-- **RLS**: Bases preparadas para seguridad de nivel de fila.
+### 🗄️ Base de Datos (Supabase / PostgreSQL) - **[50%]**
+Infraestructura real operativa en la nube con Supabase.
+- **Esquema Real**: Tablas `perfiles`, `juegos`, `config_juegos` y `transacciones`.
+- **Seed Data**: Script `seed_data.sql` disponible para inicializar el entorno de pruebas.
 
 ## 🚀 Cómo empezar
 
-### Frontend
-1. Entra a `frontend/` e instala: `npm install`
-2. Arranca: `npm start`
-3. Abre: `http://localhost:4200`
+### 1. Requisitos
+- .NET 10.0 SDK
+- Node.js & Angular CLI
+- Cuenta de Supabase
 
-### Backend (Visual Studio / .NET CLI)
-1. Abre `backend/SlotCasino.sln` en **Visual Studio**.
-2. O usa la CLI: `dotnet run --project backend/src/SlotCasino.Api/SlotCasino.Api.csproj`
-3. Explora la API en: `http://localhost:5000/swagger`
+### 2. Configuración de API (Backend)
+Debes configurar las credenciales de Supabase en tu entorno local usando `user-secrets`:
+```bash
+cd backend/src/SlotCasino.Api
+dotnet user-secrets set "Supabase:Url" "TU_PROJECT_URL"
+dotnet user-secrets set "Supabase:Key" "TU_ANON_KEY"
+dotnet run
+```
+
+### 3. Frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+Abre: `http://localhost:4200`
 
 ---
-*Este proyecto está en evolución constante. v2.2 del frontend y v0.1 del backend.*
+*v2.5 del proyecto. Backend estabilizado con Supabase Client SDK.*
 
